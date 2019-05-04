@@ -110,7 +110,7 @@ class WaypointUpdater(object):
         closest_idx = self.get_closest_waypoint_idx()
         # We want the car to stop at the end of the track, so not doing module
         farthest_idx = min(closest_idx + LOOKAHEAD_WPS, len(self.base_waypoints.waypoints))
-        if self.stop_line_wp_idx == -1 or self.stop_line_wp_idx >= farthest_idx #or self.stop_line_wp_idx < closest_idx + 1:
+        if self.stop_line_wp_idx == -1 or self.stop_line_wp_idx >= farthest_idx or self.stop_line_wp_idx < closest_idx + 1:
             # If there is no red traffic light ahead, just adding next selected waypoint
             return self.move_to_next_waypoint(closest_idx, farthest_idx)
         else:

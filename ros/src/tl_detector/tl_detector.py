@@ -12,6 +12,9 @@ import tf
 import cv2
 import yaml
 
+from darknet_ros_msgs.msg import BoundingBox
+from darknet_ros_msgs.msg import BoundingBoxes
+
 STATE_COUNT_THRESHOLD = 3
 
 class TLDetector(object):
@@ -37,6 +40,9 @@ class TLDetector(object):
         sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
         sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
 
+        # Subscribing to /darknet_ros/bounding_boxes
+        sub5 = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, self.process_bounding_boxes)
+
         config_string = rospy.get_param("/traffic_light_config")
         self.config = yaml.load(config_string)
 
@@ -52,6 +58,11 @@ class TLDetector(object):
         self.state_count = 0
 
         rospy.spin()
+
+    def process_bounding_boxes(self, msg):
+        for bounding_box in msg.bounding_boxes:
+            if bounding_box.probability > 0.85:
+                print('Bounding box class: ', str(bounding_box.Class))
 
     def pose_cb(self, msg):
         self.pose = msg

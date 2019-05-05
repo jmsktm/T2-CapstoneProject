@@ -1,0 +1,13 @@
+diff --git a/darknet_ros/config/ros.yaml b/darknet_ros/config/ros.yaml
+index 04abce5..1e68f1b 100644
+--- a/darknet_ros/config/ros.yaml
++++ b/darknet_ros/config/ros.yaml
+@@ -1,7 +1,7 @@
+ subscribers:
+ 
+   camera_reading:
+-    topic: /camera/rgb/image_raw
++    topic: /image_color
+     queue_size: 1
+ 
+ actions:

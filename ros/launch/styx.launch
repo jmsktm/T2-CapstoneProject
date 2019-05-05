@@ -20,4 +20,7 @@
 
     <!--Traffic Light Locations and Camera Config -->
     <param name="traffic_light_config" textfile="$(find tl_detector)/sim_traffic_light_config.yaml" />
+
+    <!--DarkNet ROS Node -->
+    <include file="$(find darknet_ros)/launch/yolo_v3.launch"/>
 </launch>

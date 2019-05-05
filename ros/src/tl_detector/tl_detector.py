@@ -26,6 +26,7 @@ class TLDetector(object):
         self.camera_image = None
         self.lights = []
         self.waypoints_2d = []
+        self.frame_count = 0
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
@@ -38,7 +39,9 @@ class TLDetector(object):
         rely on the position of the light and the camera image to predict it.
         '''
         sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
-        sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
+        sub6 = rospy.Subscriber('/image_color', Image, self.image_cb_adjust_frame_rate)
+
+        self.image_pub = rospy.Publisher('/image_color/adjusted', Image, queue_size=1)
 
         # Subscribing to /darknet_ros/bounding_boxes
         sub5 = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, self.process_bounding_boxes)
@@ -58,6 +61,13 @@ class TLDetector(object):
         self.state_count = 0
 
         rospy.spin()
+
+    def image_cb_adjust_frame_rate(self, msg):
+        adjusted_image_rate = 4
+        self.frame_count = self.frame_count + 1
+        if self.frame_count >= adjusted_image_rate:
+            image_pub.publish(msg)
+            self.frame_count = 0
 
     def process_bounding_boxes(self, msg):
         for bounding_box in msg.bounding_boxes:

@@ -27,6 +27,7 @@ class TLDetector(object):
         self.lights = []
         self.waypoints_2d = []
         self.frame_count = 0
+        self.adjusted_frame_count = 0
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
@@ -63,13 +64,15 @@ class TLDetector(object):
         rospy.spin()
 
     def image_cb_adjust_frame_rate(self, msg):
-        adjusted_image_rate = 5
+        adjusted_image_rate = 8
         self.frame_count = self.frame_count + 1
         if self.frame_count >= adjusted_image_rate:
             self.image_pub.publish(msg)
             self.frame_count = 0
 
     def process_bounding_boxes(self, msg):
+        self.adjusted_frame_count = self.adjusted_frame_count + 1
+        print('Frame: ', self.adjusted_frame_count)
         for bounding_box in msg.bounding_boxes:
             if bounding_box.probability > 0.85:
                 print('Bounding box class: ', str(bounding_box.Class))

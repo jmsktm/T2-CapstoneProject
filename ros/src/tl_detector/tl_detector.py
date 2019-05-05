@@ -42,7 +42,7 @@ class TLDetector(object):
         sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
         sub6 = rospy.Subscriber('/image_color', Image, self.image_cb_adjust_frame_rate)
 
-        self.image_pub = rospy.Publisher('/image_color/adjusted', Image, queue_size=1)
+        self.image_pub = rospy.Publisher('/image_adjusted', Image, queue_size=1)
 
         # Subscribing to /darknet_ros/bounding_boxes
         sub5 = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, self.process_bounding_boxes)

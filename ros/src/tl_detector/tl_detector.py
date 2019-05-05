@@ -72,7 +72,7 @@ class TLDetector(object):
 
     def process_bounding_boxes(self, msg):
         self.adjusted_frame_count = self.adjusted_frame_count + 1
-        print('Frame: ', self.adjusted_frame_count)
+        rospy.loginfo('Frame: ', self.adjusted_frame_count)
         for bounding_box in msg.bounding_boxes:
             if bounding_box.probability > 0.85:
                 print('Bounding box class: ', str(bounding_box.Class))

@@ -64,9 +64,10 @@ class TLDetector(object):
         rospy.spin()
 
     def image_cb_adjust_frame_rate(self, msg):
-        adjusted_image_rate = 4
+        adjusted_image_rate = 6
         self.frame_count = self.frame_count + 1
         if self.frame_count >= adjusted_image_rate:
+            rospy.loginfo(self.frame_count)
             self.image_pub.publish(msg)
             self.image_cb(msg)
             self.frame_count = 0

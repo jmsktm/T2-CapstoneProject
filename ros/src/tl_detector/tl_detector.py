@@ -68,6 +68,7 @@ class TLDetector(object):
         self.frame_count = self.frame_count + 1
         if self.frame_count >= adjusted_image_rate:
             self.image_pub.publish(msg)
+            self.image_cb(msg)
             self.frame_count = 0
 
     def process_bounding_boxes(self, msg):
